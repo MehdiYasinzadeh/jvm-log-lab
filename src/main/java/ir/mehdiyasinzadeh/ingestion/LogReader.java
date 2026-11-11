@@ -1,5 +1,7 @@
 package ir.mehdiyasinzadeh.ingestion;
 
+import ir.mehdiyasinzadeh.statistics.LogCounter;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +27,7 @@ public class LogReader {
     public List<String> reads(String path) throws IOException {
         List<String> logs = new ArrayList<>();
         List<Thread> threads = new ArrayList<>();
+        LogCounter counter = new LogCounter();
 
         try (var files = Files.list(Path.of(path))) {
             for (Path file : files
@@ -42,6 +45,9 @@ public class LogReader {
                     }
                     System.out.println("thread " + currentThreadName + " start for processing: " + fileName
                             + " with " + lineFile + " line");
+                    for (int i = 0; i < 10_000; i++) {
+                        counter.increment();
+                    }
                 }));
             }
         }
@@ -53,6 +59,7 @@ public class LogReader {
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("Counter: " + counter.getCount());
         return logs;
     }
 }
