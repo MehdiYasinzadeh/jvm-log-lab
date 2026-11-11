@@ -1,12 +1,10 @@
 package ir.mehdiyasinzadeh.ingestion;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LogReader {
@@ -45,14 +43,14 @@ public class LogReader {
                     System.out.println("thread " + currentThreadName + " start for processing: " + fileName
                             + " with " + lineFile + " line");
                 }));
-
-                threads.forEach(thread -> {
-                    try {
-                        thread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+            }
+        }
+        threads.forEach(Thread::start);
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         return logs;
