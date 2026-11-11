@@ -1,0 +1,8 @@
+hello
+bad log
+
+2026-99-99 99:99:99 ERROR DatabaseService - timeout
+
+2026-10-24 10:00:00 FATAL DatabaseService - crashed
+
+2026-10-24 10:00:01 ERROR DatabaseService - timeout
